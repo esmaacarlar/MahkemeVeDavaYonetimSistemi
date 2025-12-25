@@ -39,6 +39,11 @@ CREATE TABLE DavaYonetim.Dava (
         REFERENCES Adliye.Mahkeme(MahkemeID)
 );
 
+ALTER TABLE DavaYonetim.Dava
+ADD CONSTRAINT CK_Dava_Durum
+CHECK (Durum IN ('Devam', 'Karara Baglandi', 'Kapatildi'));
+
+
 CREATE TABLE DavaYonetim.Taraf (
     TarafID INT IDENTITY PRIMARY KEY,
     Ad NVARCHAR(50) NOT NULL,
@@ -61,6 +66,11 @@ CREATE TABLE DavaYonetim.DavaTaraf (
         REFERENCES DavaYonetim.Taraf(TarafID)
 );
 
+ALTER TABLE DavaYonetim.DavaTaraf
+ADD CONSTRAINT UQ_Dava_Taraf_Rol
+UNIQUE (DavaID, TarafID, Rol);
+
+
 CREATE TABLE DavaYonetim.Avukat (
     AvukatID INT IDENTITY PRIMARY KEY,
     BaroNo NVARCHAR(20) UNIQUE NOT NULL,
@@ -81,6 +91,11 @@ CREATE TABLE DavaYonetim.Durusma (
 
 ALTER TABLE DavaYonetim.Durusma
 ALTER COLUMN Saat TIME(0) NOT NULL;
+
+ALTER TABLE DavaYonetim.Durusma
+ADD CONSTRAINT UQ_Dava_Durusma_TarihSaat
+UNIQUE (DavaID, DurusmaTarihi, Saat);
+
 
 
 CREATE TABLE DavaYonetim.AraKarar (
