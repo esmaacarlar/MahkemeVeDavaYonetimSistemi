@@ -114,13 +114,10 @@ CREATE TABLE DavaYonetim.Belge (
     BelgeAdi NVARCHAR(100),
     BelgeTuru NVARCHAR(50),
     DosyaYolu NVARCHAR(255),
-    YuklemeTarihi DATETIME DEFAULT GETDATE(),
+    YuklemeTarihi DATETIME2(0) NOT NULL DEFAULT GETDATE(),
     FOREIGN KEY (DavaID)
         REFERENCES DavaYonetim.Dava(DavaID)
 );
-
-ALTER TABLE DavaYonetim.Belge
-ALTER COLUMN YuklemeTarihi DATETIME2(0) NOT NULL;
 
 CREATE TABLE DavaYonetim.Karar (
     KararID INT IDENTITY PRIMARY KEY,
@@ -290,7 +287,7 @@ BEGIN
     BEGIN
         UPDATE DavaYonetim.Dava
         SET
-            Durum = 'Sonuclandi',
+            Durum = 'Karara Baglandi',
             DavaAsamasi = 'Karar'
         WHERE DavaID IN (
             SELECT DavaID
